@@ -1,0 +1,97 @@
+package Server;
+
+import java.util.ArrayList;
+
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.websocket.server.WebSocketHandler;
+import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import Game.TetrisGame;
+
+public class GameServer {
+	private static final GameServer gameServer = new GameServer();
+	private ArrayList<GamerSocket> gamerList = new ArrayList<GamerSocket>();
+	private TetrisGame mainGame;
+	
+	public static void main(String[] args) throws Exception 
+	{
+		Server server = new Server(8080);
+	    WebSocketHandler wsHandler = new WebSocketHandler() {
+	    	@Override
+	        public void configure(WebSocketServletFactory factory) {
+	    		factory.register(MyWebSocketHandler.class);
+	        }
+	    };
+	    
+	    server.setHandler(wsHandler);
+	    server.start();
+	    server.join();
+	}
+	
+	public static GameServer getGamerServer()
+	{
+		return gameServer;
+	}
+	
+	public synchronized void addGamerToList(GamerSocket gs)
+	{
+		gamerList.add(gs);
+	}
+	
+	public synchronized void removeGamer(GamerSocket gs)
+	{
+		gamerList.remove(gs);
+	}
+	
+	public synchronized void sendDataToGamers(String data)
+	{
+		for(GamerSocket gs: gamerList)
+		{
+			gs.sendMessage(data);
+		}
+	}
+	
+	public synchronized void startGame()
+	{
+		String message = "Starting Game";
+		System.out.println(message);
+		sendDataToGamers(message);
+	}
+	
+	public synchronized void rotateClockwise()
+	{
+		System.out.println("Rotate Clockwise");
+	}
+	
+	public synchronized void rotateCounterClockwise()
+	{
+		System.out.println("Rotate Counter Clockwise");
+	}
+	
+	public synchronized void left()
+	{
+		System.out.println("Going Left");
+	}
+	
+	public synchronized void right()
+	{
+		System.out.println("Moving Right");
+	}
+	
+	public synchronized void down()
+	{
+		System.out.println("Moving Down");
+	}
+	
+	public synchronized void allDown()
+	{
+		System.out.println("Moving all the way down.");
+	}
+	
+	public synchronized void pause()
+	{
+		System.out.println("Pausing Game");
+	}
+	
+	
+
+}

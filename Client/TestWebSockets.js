@@ -1,4 +1,4 @@
-var ws = new WebSocket("ws://localhost:8080/");
+var ws = new WebSocket("ws://localhost:8080");
 
 ws.onopen = function() {
     alert("Opened!");
@@ -16,3 +16,8 @@ ws.onclose = function() {
 ws.onerror = function(err) {
     alert("Error: " + err);
 };
+
+function sendData(message)
+{
+  ws.send(message);
+}

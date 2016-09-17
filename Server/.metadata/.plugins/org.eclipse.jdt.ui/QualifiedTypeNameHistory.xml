@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.java_websocket.util.Base64.InputStream"/>
+<fullyQualifiedTypeName name="org.java_websocket.util.Base64.OutputStream"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.util.regex.Matcher"/>
+<fullyQualifiedTypeName name="java.util.regex.Pattern"/>
+<fullyQualifiedTypeName name="javax.xml.bind.DatatypeConverter"/>
+<fullyQualifiedTypeName name="java.security.MessageDigest"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="java.lang.Byte"/>
+<fullyQualifiedTypeName name="java.nio.charset.StandardCharsets"/>
+<fullyQualifiedTypeName name="java.net.InetAddress"/>
+<fullyQualifiedTypeName name="java.net.InetSocketAddress"/>
+<fullyQualifiedTypeName name="java.util.Hashtable"/>
+<fullyQualifiedTypeName name="org.eclipse.jetty.server.Server"/>
+<fullyQualifiedTypeName name="Game.TetrisGame"/>
+<fullyQualifiedTypeName name="org.eclipse.jetty.server.ServerConnector"/>
+<fullyQualifiedTypeName name="org.java_websocket.server.WebSocketServer"/>
+</qualifiedTypeNameHistroy>
