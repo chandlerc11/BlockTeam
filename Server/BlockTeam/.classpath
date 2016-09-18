@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/cdi-core-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/cdi-servlet-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/cdi-websocket-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-alpn-server-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-annotations-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-client-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-continuation-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-deploy-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-gcloud-memcached-session-manager-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-gcloud-session-manager-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-http-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-infinispan-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-io-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-jaas-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-jaspi-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-jmx-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-jndi-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-nosql-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-plus-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-proxy-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-quickstart-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-rewrite-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-schemas-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-security-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-server-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-servlet-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-servlets-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-util-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-webapp-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/jetty-xml-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/servlet-api-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/websocket/javax.websocket-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/websocket/javax-websocket-client-impl-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/websocket/javax-websocket-server-impl-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/websocket/websocket-api-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/websocket/websocket-client-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/websocket/websocket-common-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/websocket/websocket-server-9.3.11.v20160721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jason/Dropbox/Jason Documents/Hackathon Fall 2016/BlockTeam/Server/BlockTeam/lib/websocket/websocket-servlet-9.3.11.v20160721.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

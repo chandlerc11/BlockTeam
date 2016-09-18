@@ -2,6 +2,30 @@
 <html>
     <body>
         <h1>WebSocket test</h1>
+        <button id="right" onclick="sendData('rt')">
+          Go Right
+        </button>
+        <button id="left" onclick="sendData('lf')">
+          Go Left
+        </button>
+        <button id="rCCW" onclick="sendData('rCw')">
+          Rotate Counter Clockwise
+        </button>
+        <button id="Send data" onclick="sendData('rCCw')">
+          Send Data to Server
+        </button>
+        <button id="start" onclick="sendData('st')">
+          Start
+        </button>
+        <button id="down" onclick="sendData('d')">
+          Go Down
+        </button>
+        <button id="allDown" onclick="sendData('aD')">
+          All the way Down
+        </button>
+        <button id="Send data" onclick="sendData('p')">
+          Send Data to Server
+        </button>
         <script src="TestWebSockets.js"></script>
     </body>
 </html>
