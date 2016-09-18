@@ -14,7 +14,11 @@
 <fullyQualifiedTypeName name="java.net.InetSocketAddress"/>
 <fullyQualifiedTypeName name="java.util.Hashtable"/>
 <fullyQualifiedTypeName name="org.eclipse.jetty.server.Server"/>
-<fullyQualifiedTypeName name="Game.TetrisGame"/>
 <fullyQualifiedTypeName name="org.eclipse.jetty.server.ServerConnector"/>
 <fullyQualifiedTypeName name="org.java_websocket.server.WebSocketServer"/>
+<fullyQualifiedTypeName name="org.eclipse.jetty.websocket.api.annotations.WebSocket"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="Game.TetrisGame"/>
+<fullyQualifiedTypeName name="Server.GameServer"/>
+<fullyQualifiedTypeName name="Game.GameConstants.GameMoves"/>
 </qualifiedTypeNameHistroy>

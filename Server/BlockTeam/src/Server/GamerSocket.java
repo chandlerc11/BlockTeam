@@ -9,6 +9,8 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
+import Game.GameConstants.GameMoves;
+
 @WebSocket
 public class GamerSocket 
 {
@@ -42,21 +44,21 @@ public class GamerSocket
     public void onMessage(String message) {
     	switch(message)
     	{
-    		case "rt":gameServer.right();
+    		case "rt":gameServer.gamerInput(GameMoves.RIGHT);
     				break;
-    		case "lf": gameServer.left();
+    		case "lf": gameServer.gamerInput(GameMoves.LEFT);
     				break;
-    		case "rCw": gameServer.rotateClockwise();
+    		case "rCw": gameServer.gamerInput(GameMoves.ROTATECLOCKWISE);
     				break;
-    		case "rCCw": gameServer.rotateCounterClockwise();
+    		case "rCCw": gameServer.gamerInput(GameMoves.ROTATECOUNTERCLOCKWISE);
     				break;
-    		case "st": gameServer.startGame();
+    		case "st": gameServer.gamerInput(GameMoves.START);
     				break;
-    		case "d": gameServer.down();
+    		case "d": gameServer.gamerInput(GameMoves.DOWN);
     				break;
-    		case "aD": gameServer.allDown();
+    		case "aD": gameServer.gamerInput(GameMoves.ALLDOWN);
     				break;
-    		case "p": gameServer.pause();
+    		case "p": gameServer.gamerInput(GameMoves.PAUSE);
     				break;
     	}
     }

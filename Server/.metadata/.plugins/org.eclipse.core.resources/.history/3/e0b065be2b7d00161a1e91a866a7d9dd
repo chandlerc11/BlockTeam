@@ -1,0 +1,25 @@
+package Game;
+
+import Server.GameServer;
+
+public class TetrisGame implements Runnable {
+	private GameServer gameServer;
+	
+	public TetrisGame(GameServer gameServer)
+	{
+		this.gameServer = gameServer;
+	}
+	
+	public void start()
+	{
+		run();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}

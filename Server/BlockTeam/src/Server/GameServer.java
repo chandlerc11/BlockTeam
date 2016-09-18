@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.websocket.server.WebSocketHandler;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+
+import Game.GameConstants.GameMoves;
 import Game.TetrisGame;
 
 public class GameServer {
 	private static final GameServer gameServer = new GameServer();
 	private ArrayList<GamerSocket> gamerList = new ArrayList<GamerSocket>();
-	private TetrisGame mainGame;
+	private static TetrisGame mainGame;
 	
 	public static void main(String[] args) throws Exception 
 	{
@@ -25,6 +27,11 @@ public class GameServer {
 	    server.setHandler(wsHandler);
 	    server.start();
 	    server.join();
+	    
+	    Thread t = new Thread(new TetrisGame(gameServer));
+	    t.start();
+	    while(t.isAlive());
+	    	
 	}
 	
 	public static GameServer getGamerServer()
@@ -48,6 +55,11 @@ public class GameServer {
 		{
 			gs.sendMessage(data);
 		}
+	}
+	
+	public synchronized void gamerInput(GameMoves move)
+	{
+		mainGame.gamersMove(move);
 	}
 	
 	public synchronized void startGame()
