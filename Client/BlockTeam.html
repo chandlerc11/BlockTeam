@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BLockTeam!</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+
+  <style>
+
+  </style>
+
+  <body style="background-color:#e1e8f0;">
+    <div class-"container">
+        <h1 class="text-center">
+            <font color="#e62739">BlockTeam!</font>
+        </h1>
+        <h3 id="score" class="text-center">Score: 0</h3>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <div class="jumbotron" style="background-color: #6ed3cf">
+                <h3 class="text-center">How To Play!</h3>
+                <p class="text-center">
+                    <font color="#e1e8f0">Press "Enter" to start/continue game.</font>
+                </p>
+                <p class="text-center">Press "Esc" to pause game.</p>
+                <p class="text-center">
+                    <font color="#e1e8f0">Press "<" (Left arrow) to move piece left.</font>
+                </p>
+                <p class="text-center">Press ">" (right arrow) to move piece right.</p>
+                <p class="text-center">
+                    <font color="#e1e8f0">Press "v" (down arrow) to move piece down.</font>
+                </p>
+                <p class="text-center">Press "^" (up arrow) to rotate piece.</p>
+                <p class="text-center">
+                    <font color="#e1e8f0">Press Space Bar to move piece to the bottom.</font>
+                </p>
+            </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-lg-4">
+              <canvas id="gameBoard" width="360" height="720" style="border:1px solid #000000;"></canvas>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <div class="jumbotron" style="background-color: #9068be">
+                <h3 class="text-center">Chat With others!</h3>
+                <div class="row">
+                    <ul id="messages"></ul>
+                </div>
+                <div class="row">
+                    <form action="">
+                      <input id="m" autocomplete="off" />
+                      <button>Enter Username</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script src="TestWebSockets.js"></script>
+  </body>

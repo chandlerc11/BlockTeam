@@ -60,7 +60,7 @@ public class GameServer {
 	public synchronized void gamerInput(GameMoves move)
 	{
 		mainGame.gamersMove(move);
-		/*switch(move)
+		switch(move)
 		{
 			case START: startGame();
 				break;
@@ -77,7 +77,6 @@ public class GameServer {
 			case ROTATE: rotateClockwise();
 				break;
 		}
-		*/
 	}
 	
 	public synchronized void startGame()

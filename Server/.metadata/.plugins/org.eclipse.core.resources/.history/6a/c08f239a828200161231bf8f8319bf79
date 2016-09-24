@@ -269,7 +269,7 @@ public class PlayingBoard
 		while(iter.hasNext())
 		{
 			SB.append(iter.next().data());
-			SB.append(";");
+			SB.append(",");
 		}
 			
 		return SB.toString();
