@@ -1,0 +1,54 @@
+package GamePieces;
+
+import java.util.*;
+
+import Game.*;
+import Game.GameConstants.GameMoves;
+import Game.GameConstants.PolyominoeType;
+import Game.GameConstants.TetrisBlockColor;
+
+public class IType extends Polyominoes {
+
+	public IType(TetrisBlock[][] tetrisBoard) {
+		// TODO Auto-generated constructor stub
+		super(PolyominoeType.ITYPE, tetrisBoard);
+	}
+
+	@Override
+	protected boolean rotate() {
+		TetrisBlock rotationBlock = blocks.get(3);
+		int rotateWidth = rotationBlock.getWidth();
+		int rotateHeight = rotationBlock.getHeight();
+		ArrayList<Integer[]> rotatePositions = new ArrayList<Integer[]>();
+		
+		Iterator<TetrisBlock> iter = blocks.iterator();
+		
+		while(iter.hasNext())
+		{
+			
+			TetrisBlock toRotate = iter.next();
+			rotatePositions.add(rotateBlock(toRotate, rotateWidth, rotateHeight));
+		}
+		
+		if(checkPositions(rotatePositions))
+		{
+			for(int index = 0; index < blocks.size(); index++)
+			{
+				Integer[] positions = rotatePositions.get(index);
+				blocks.get(index).reDraw(newIndexWidth, newIndexHeight);
+			}
+			drawPoly();
+			return true;
+		}
+		
+		return false;
+	}	
+
+	@Override
+	protected boolean createPiece() 
+	{
+		createNewPieceFromArray(GameConstants.ITYPE_START, TetrisBlockColor.CYAN, this);
+		return checkIfGameOver();
+	}
+
+}

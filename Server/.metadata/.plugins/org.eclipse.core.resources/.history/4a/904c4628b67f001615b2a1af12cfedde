@@ -1,0 +1,42 @@
+package GamePieces;
+
+import Game.*;
+import Game.GameConstants.PolyominoeType;
+
+public class ZType extends Polyominoes {
+
+	public ZType(TetrisBlock[][] tetrisBoard) {
+		// TODO Auto-generated constructor stub
+		super(PolyominoeType.ZTYPE, tetrisBoard);
+	}
+
+	@Override
+	protected boolean rotate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean down() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean right() {
+		return false;
+	}
+
+	@Override
+	protected boolean left() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean createPiece() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

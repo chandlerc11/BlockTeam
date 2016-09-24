@@ -1,0 +1,9 @@
+package GamePieces;
+
+public class IType {
+
+	public IType() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

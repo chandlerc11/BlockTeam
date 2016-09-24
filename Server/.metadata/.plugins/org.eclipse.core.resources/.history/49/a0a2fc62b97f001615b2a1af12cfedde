@@ -1,0 +1,25 @@
+package Game;
+
+public class GameConstants {
+	public enum GameMoves {
+	    START, PAUSE, LEFT, RIGHT, DOWN, ALLDOWN, ROTATE
+	}
+	
+	public enum PolyDown {
+	    TRUE, FALSE, UNKNOWN
+	}
+	
+	public enum TetrisBlockColor{
+		CYAN, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED
+	}
+	
+	public enum PolyominoeType{
+		ITYPE, JTYPE, LTYPE, OTYPE, STYPE, TTYPE, ZTYPE  
+	}
+	
+	
+	
+	public static final int WIDTH = 10;
+	public static final int HEIGHT = 24;
+	public static final int NUMPIECES = 7;
+}

@@ -1,0 +1,25 @@
+package GamePieces;
+
+import Game.*;
+import Game.GameConstants.PolyominoeType;
+
+public class JType extends Polyominoes {
+
+	public JType(TetrisBlock[][] tetrisBoard) {
+		// TODO Auto-generated constructor stub
+		super(PolyominoeType.JTYPE, tetrisBoard);
+	}
+
+	@Override
+	protected boolean rotate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean createPiece() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

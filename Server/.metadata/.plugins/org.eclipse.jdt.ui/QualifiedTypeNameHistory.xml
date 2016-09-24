@@ -17,8 +17,14 @@
 <fullyQualifiedTypeName name="org.eclipse.jetty.server.ServerConnector"/>
 <fullyQualifiedTypeName name="org.java_websocket.server.WebSocketServer"/>
 <fullyQualifiedTypeName name="org.eclipse.jetty.websocket.api.annotations.WebSocket"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="Game.TetrisGame"/>
 <fullyQualifiedTypeName name="Server.GameServer"/>
+<fullyQualifiedTypeName name="Game.Polyominoes.Block"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="Game.Polyominoes"/>
+<fullyQualifiedTypeName name="Game.GameConstants.PolyominoeType"/>
+<fullyQualifiedTypeName name="GamePieces.IType"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="Game.GameConstants.TetrisBlockColor"/>
 <fullyQualifiedTypeName name="Game.GameConstants.GameMoves"/>
 </qualifiedTypeNameHistroy>

@@ -19,6 +19,7 @@ public class GamerSocket
 	@OnWebSocketClose
     public void onClose(int statusCode, String reason) {
         System.out.println("Close: statusCode=" + statusCode + ", reason=" + reason);
+        gameServer.removeGamer(this);
     }
 
     @OnWebSocketError
@@ -48,9 +49,7 @@ public class GamerSocket
     				break;
     		case "lf": gameServer.gamerInput(GameMoves.LEFT);
     				break;
-    		case "rCw": gameServer.gamerInput(GameMoves.ROTATECLOCKWISE);
-    				break;
-    		case "rCCw": gameServer.gamerInput(GameMoves.ROTATECOUNTERCLOCKWISE);
+    		case "r": gameServer.gamerInput(GameMoves.ROTATE);
     				break;
     		case "st": gameServer.gamerInput(GameMoves.START);
     				break;

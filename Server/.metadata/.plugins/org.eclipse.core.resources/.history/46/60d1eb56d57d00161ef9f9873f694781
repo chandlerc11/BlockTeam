@@ -1,0 +1,11 @@
+package Game;
+
+public class PlayingField 
+{
+	public PlayingField(int size)
+	{
+		
+	}
+
+	
+}

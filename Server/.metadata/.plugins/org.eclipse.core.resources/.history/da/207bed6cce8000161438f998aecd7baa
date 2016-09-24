@@ -1,0 +1,133 @@
+package Game;
+
+import Game.GameConstants.*;
+import Server.GameServer;
+
+public class TetrisGame  
+{
+	private GameServer gameServer;
+	private boolean gameRunning;
+	private PlayingBoard PB;
+	
+	public TetrisGame(GameServer gameServer)
+	{
+		this.gameServer = gameServer;
+		PB = new PlayingBoard(GameConstants.WIDTH, GameConstants.HEIGHT, this);
+		gameRunning = false;
+		gameRunningInProgress = false;
+		start();
+	}
+	
+	public void start()
+	{
+		Thread T = new Thread(new RunningGame(this));
+		T.start();
+	}	
+	
+	public synchronized void sendDataToGamers()
+	{
+		gameServer.sendDataToGamers(PB.currentBoard());
+	}
+
+	public synchronized void gamersMove(GameMoves move) 
+	{
+		if(gameRunning)
+		{
+			if(GameMoves.PAUSE == move)
+			{
+				pauseGame();
+			}
+			else
+			{
+				PB.addMoveToQueue(move);			
+			}	
+		}
+		else if(move == GameMoves.START)
+		{
+			startGame();
+		}
+	}
+	
+	public void startGame()
+	{
+		gameRunning = true;
+	}
+	
+	public void pauseGame()
+	{
+		gameRunning = false;
+	}
+
+	public void restart() 
+	{
+		PB.restart();		
+	}
+	
+	public boolean isGameRunning()
+	{
+		return gameRunning;
+	}
+	
+	public synchronized void updateGame()
+	{
+		PB.update();
+	}
+
+	public void gameOver() 
+	{
+		gameRunning = false;
+		PB.restart();
+		gameServer.sendDataToGamers("Game Over");
+	}
+	
+	private class RunningGame implements Runnable
+	{
+		private TetrisGame tetrisGame;
+		private volatile boolean running;
+		public RunningGame(TetrisGame tetrisGame)
+		{
+			this.tetrisGame = tetrisGame; 
+		}
+		
+		
+		@Override
+		public void run() 
+		{
+			running = true;
+			while(running)
+			{
+				while(tetrisGame.isGameRunning())
+				{
+					System.out.println("Updating Game");
+					long startTime = System.currentTimeMillis(); //fetch starting time
+					tetrisGame.changeGameRunningInProgress();
+					tetrisGame.updateGame();
+					tetrisGame.sendDataToGamers();
+					tetrisGame.changeGameRunningInProgress();
+					while((System.currentTimeMillis() - startTime) < GameConstants.RATE)
+					{
+						sleep();
+					}
+				}			
+				sleep();
+			}		
+		}
+		
+		public void sleep()
+		{
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		public void stop()
+		{
+			running = false;
+		}
+	}
+	
+	
+}

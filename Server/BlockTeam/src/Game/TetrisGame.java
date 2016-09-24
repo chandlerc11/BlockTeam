@@ -1,57 +1,50 @@
 package Game;
 
-import Game.GameConstants.GameMoves;
+import Game.GameConstants.*;
 import Server.GameServer;
 
-public class TetrisGame implements Runnable {
+public class TetrisGame  
+{
 	private GameServer gameServer;
 	private boolean gameRunning;
-	private volatile boolean running = true;
-	private PlayingField PF;
+	private PlayingBoard PB;
 	
 	public TetrisGame(GameServer gameServer)
 	{
 		this.gameServer = gameServer;
+		PB = new PlayingBoard(GameConstants.WIDTH, GameConstants.HEIGHT, this);
+		gameRunning = false;
+		start();
 	}
 	
 	public void start()
 	{
-		run();
-	}
-	
-	public void stop()
-	{
-		running = false;
-	}
-
-	@Override
-	public void run() 
-	{
-		while(running)
-		{
-			while(gameRunning && running)
-			{
-				
-			}
-			
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}		
-	}
+		Thread T = new Thread(new RunningGame(this));
+		T.start();
+	}	
 	
 	public void sendDataToGamers()
 	{
-		gameServer.sendDataToGamers(PF.currentScreen());
+		gameServer.sendDataToGamers(PB.currentBoard());
 	}
 
-	public void gamersMove(GameMoves move) 
+	public synchronized void gamersMove(GameMoves move) 
 	{
-		
-		
+		if(gameRunning)
+		{
+			if(GameMoves.PAUSE == move)
+			{
+				pauseGame();
+			}
+			else
+			{
+				PB.addMoveToQueue(move);			
+			}	
+		}
+		else if(move == GameMoves.START)
+		{
+			startGame();
+		}
 	}
 	
 	public void startGame()
@@ -62,6 +55,69 @@ public class TetrisGame implements Runnable {
 	public void pauseGame()
 	{
 		gameRunning = false;
+	}
+
+	public void restart() 
+	{
+		PB.restart();		
+	}
+	
+	public boolean isGameRunning()
+	{
+		return gameRunning;
+	}
+
+	public void gameOver() 
+	{
+		gameRunning = false;
+		PB.restart();
+		gameServer.sendDataToGamers("Game Over");
+	}
+	
+	private class RunningGame implements Runnable
+	{
+		private TetrisGame tetrisGame;
+		private volatile boolean running;
+		public RunningGame(TetrisGame tetrisGame)
+		{
+			this.tetrisGame = tetrisGame; 
+		}
+		
+		
+		@Override
+		public void run() 
+		{
+			running = true;
+			while(running)
+			{
+				while(tetrisGame.isGameRunning())
+				{
+					System.out.println("Updating Game");
+					long startTime = System.currentTimeMillis(); //fetch starting time
+					tetrisGame.gamersMove(GameMoves.UPDATE);
+					while((System.currentTimeMillis() - startTime) < GameConstants.RATE)
+					{
+						sleep();
+					}
+				}			
+				sleep();
+			}		
+		}
+		
+		public void sleep()
+		{
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		public void stop()
+		{
+			running = false;
+		}
 	}
 	
 	

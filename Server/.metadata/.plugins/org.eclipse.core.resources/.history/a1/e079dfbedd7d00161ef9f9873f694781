@@ -1,0 +1,10 @@
+package Game;
+
+public class GameConstants {
+	public enum GameMoves {
+	    START, PAUSE, LEFT, RIGHT, DOWN, ALLDOWN, ROTATECLOCKWISE, ROTATECOUNTERCLOCKWISE
+	}
+	
+	public static final int WIDTH = 10;
+	public static final int HEIGHT = 24;
+}

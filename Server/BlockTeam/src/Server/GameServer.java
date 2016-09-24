@@ -12,11 +12,11 @@ import Game.TetrisGame;
 public class GameServer {
 	private static final GameServer gameServer = new GameServer();
 	private ArrayList<GamerSocket> gamerList = new ArrayList<GamerSocket>();
-	private static TetrisGame mainGame;
+	private static TetrisGame mainGame = new TetrisGame(gameServer);
 	
 	public static void main(String[] args) throws Exception 
 	{
-		Server server = new Server(8080);
+		Server server = new Server(8080);		
 	    WebSocketHandler wsHandler = new WebSocketHandler() {
 	    	@Override
 	        public void configure(WebSocketServletFactory factory) {
@@ -24,14 +24,10 @@ public class GameServer {
 	        }
 	    };
 	    
+	    server.setHandler(new HelloHandler());
 	    server.setHandler(wsHandler);
 	    server.start();
-	    server.join();
-	    
-	    Thread t = new Thread(new TetrisGame(gameServer));
-	    t.start();
-	    while(t.isAlive());
-	    	
+	    server.join();    	
 	}
 	
 	public static GameServer getGamerServer()
@@ -42,6 +38,10 @@ public class GameServer {
 	public synchronized void addGamerToList(GamerSocket gs)
 	{
 		gamerList.add(gs);
+		if(gamerList.size() == 0)
+		{
+			mainGame.restart();
+		}
 	}
 	
 	public synchronized void removeGamer(GamerSocket gs)
@@ -60,6 +60,23 @@ public class GameServer {
 	public synchronized void gamerInput(GameMoves move)
 	{
 		mainGame.gamersMove(move);
+		switch(move)
+		{
+			case START: startGame();
+				break;
+			case PAUSE: pause();
+				break;
+			case LEFT: left();
+				break;
+			case RIGHT: right();
+				break; 
+			case DOWN: down();
+				break;
+			case ALLDOWN: allDown();
+				break;
+			case ROTATE: rotateClockwise();
+				break;
+		}
 	}
 	
 	public synchronized void startGame()
