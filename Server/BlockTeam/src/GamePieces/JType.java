@@ -9,12 +9,6 @@ public class JType extends Polyominoes {
 	public JType(TetrisBlock[][] tetrisBoard) {
 		// TODO Auto-generated constructor stub
 		super(PolyominoeType.JTYPE, tetrisBoard);
+		createNewPieceFromArray(GameConstants.JTYPE_START, TetrisBlockColor.BLUE);
 	}
-
-	@Override
-	protected boolean createPiece() {
-		createNewPieceFromArray(GameConstants.JTYPE_START, TetrisBlockColor.BLUE, this);
-		return checkIfGameOver();
-	}
-
 }

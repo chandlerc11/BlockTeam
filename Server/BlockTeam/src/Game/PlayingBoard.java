@@ -12,55 +12,97 @@ public class PlayingBoard
 {
 	private int width;
 	private int height;
-	private Random rand;
 	private TetrisGame game; 
 	private Polyominoes current;
 	private boolean equilibrium;
 	private Polyominoes.TetrisBlock [][] tetrisBoard;
 	Queue<GameMoves> moveQueue;
 	
-	
+	/**
+	 * Constructor for TetrisBoard, starts the thread that handles incoming requests
+	 * @param width
+	 * @param height
+	 * @param game
+	 */
 	public PlayingBoard(int width, int height, TetrisGame game)
 	{
+		this.game = game;
 		this.width = width;
 		this.height = height;
-		rand = new Random();
-		this.game = game;
-		tetrisBoard  =  new Polyominoes.TetrisBlock[width][height];
 		equilibrium = true;
 		moveQueue = new LinkedList<GameMoves>();
+		restart();
+		
+		//Thread to handle incoming requests
 		start();
 	}
 	
+	public int getWidth()
+	{
+		return width;
+	}
+	
+	public int getHeight()
+	{
+		return height;
+	}
+	
+	/**
+	 * Starts Thread that handles incoming requests
+	 */
 	public void start()
 	{
 		Thread T = new Thread(new MoveHandler(this, moveQueue));
 		T.start();
 	}
 	
+	/**
+	 * Used by MoveHandler to send current TetrisBoard to gamers connected on server
+	 */
 	public void printScreen()
 	{
 		game.sendDataToGamers();
 	}
 	
+	/**
+	 * Recieves incoming requests from gamers on server and puts them in a queue that then MoveHandler will perform,
+	 * one after the other.
+	 * @param move
+	 */
 	public synchronized void addMoveToQueue(GameMoves move)
 	{
+		//FIFO
+		if(move == GameMoves.UPDATE)
+		{
+			game.pauseUpdate();
+		}
 		moveQueue.add(move);
 	}
 	
+	/**
+	 * 
+	 */
 	private class MoveHandler implements Runnable
 	{
 		private PlayingBoard playingBoard;
 		private Queue<GameMoves> moveQueue;
 		private volatile boolean running;
 		
+		/**
+		 * Constructor for MoveHandler
+		 * @param playingBoard The TetrisBoard that MoveHandler will be modifying
+		 * @param moveQueue The requests coming in 
+		 */
 		public MoveHandler(PlayingBoard playingBoard, Queue<GameMoves> moveQueue)
 		{
 			this.playingBoard = playingBoard;
 			this.moveQueue = moveQueue;
 			running = true;
 		}
-
+		
+		/**
+		 * Checks for new requests on the queue and executes them one by one.
+		 */
 		@Override
 		public void run() 
 		{
@@ -76,13 +118,18 @@ public class PlayingBoard
 					}
 					else if(playingBoard.gamerMove(move))
 					{
+						System.out.println("Player actions valid");
 						playingBoard.printScreen();
 					}
-				}		
-				sleep();
+				}	
+				
+				sleep();	
 			}			
 		}
 		
+		/**
+		 * Pauses the thread for 1 ms to not put as much stress on the processor
+		 */
 		private void sleep()
 		{
 			try {
@@ -93,92 +140,96 @@ public class PlayingBoard
 			}
 		}
 		
+		/**
+		 * Stops the thread
+		 */
 		public void stop()
 		{
 			running  = false;
 		}
 	}
 	
+	/**
+	 * Creates a new piece and checks if the new piece overlaps another piece, if so it is a gameOver
+	 */
 	public void createNewPiece()
 	{
 		current = Polyominoes.createNewPiece(tetrisBoard);
 		if(current == null)
 		{
+			game.startUpdate();
 			game.gameOver();
 		}
 	}
 	
+	/**
+	 * Moves the current piece down, checks if it hit the bottom, then checks if the TetrisBoard has made a full row and will
+	 * delete it and bring other pieces down
+	 */
 	public void update()
 	{	
 		if(current == null)
 		{
 			createNewPiece();
-			return;
 		}
 		//Move piece down		
-		if(!current.action(GameConstants.GameMoves.DOWN))
+		else if(!current.action(GameConstants.GameMoves.DOWN))
 		{
-			equilibrium = false;
-			//while !Equilibrium
-			while(!equilibrium)
+			do
 			{
 				//check for lines to delete and delete them
 				findAndDeleteLines();
-				if(equilibrium)
-				{
-					break;
-				}
+				System.out.println("Im deleting lines");
 				//After deleting lines, move all pieces down
 				moveAllBlocksDown();
-			}
+				printScreen();
+			}while(!equilibrium);
 			//create a new piece
 			createNewPiece();
-		}	
+		}
+		game.startUpdate();
 	}
 	
+	/**
+	 * Takes an incoming move and causes the current piece to perform move
+	 * @param move The move the current piece will perform
+	 * @return True if the piece was able to perform action, else false
+	 */
 	public boolean gamerMove(GameMoves move)
 	{
 		return current.action(move);
 	}
 	
+	/**
+	 * Moves all blocks down by checking if they are able to first
+	 */
 	private void moveAllBlocksDown() 
 	{
-		while(true)
+		boolean keepChecking = true;
+		
+		while(keepChecking)
 		{
-			//Mark Blocks that can be moved down
-			Stack<Polyominoes> toDown = markPiecesForDown();
-			//If no pieces do not loop, 
-			if(toDown.isEmpty())
-			{
-				return;
-			}
+			ArrayList<TetrisBlock> blockList = getAllBlocksOnBoard();
+			Iterator<Polyominoes> polyIter = blocksToPolyominoes(blockList.iterator()).iterator();
 			
-			//move all pieces marked down 
-			while(!toDown.empty())
+			keepChecking = false;
+			
+			while(polyIter.hasNext())
 			{
-				toDown.pop().action(GameConstants.GameMoves.DOWN);
+				if(polyIter.next().down())
+				{
+					keepChecking = true;
+				}
 			}
 			//loop back to top
 		}		
 	}
 	
-	private Stack<Polyominoes> markPiecesForDown()
-	{
-		ArrayList<TetrisBlock> blockList = getAllBlocksOnBoard();
-		Iterator<Polyominoes> polyIter = blocksToPolyominoes(blockList.iterator()).iterator();
-		Stack<Polyominoes> markedDown = new Stack<Polyominoes>();
-		
-		while(polyIter.hasNext())
-		{
-			Polyominoes poly = polyIter.next();
-			if(poly.canGoDown())
-			{
-				markedDown.push(poly);
-			}
-		}
-		return markedDown;
-	}
-	
+	/**
+	 * Changes an array of TetrisBlocks to an array ofPolyominoes
+	 * @param iter Iterator of TetrisBlocks
+	 * @return ArrayList of Polyominoes current on the TetrisBoard
+	 */
 	private ArrayList<Polyominoes> blocksToPolyominoes(Iterator<TetrisBlock> iter)
 	{
 		ArrayList<Polyominoes> poly = new ArrayList<Polyominoes>();
@@ -192,28 +243,36 @@ public class PlayingBoard
 		}
 		return poly;
 	}
-
+	
+	/**
+	 * Finds every TetrisBlock on the TetrisBoard and removes an entire row if it is full
+	 */
 	private void findAndDeleteLines() 
 	{		
 		Iterator<Polyominoes.TetrisBlock> iter = getAllBlocksOnBoard().iterator();
 		
 		HashMap<Integer, Stack<Polyominoes.TetrisBlock>> linesOnBoard = getBlocksPerLine(iter);
 		
-		Iterator<Entry<Integer, Stack<TetrisBlock>>> it = linesOnBoard.entrySet().iterator();
+		Iterator<Entry<Integer, Stack<TetrisBlock>>> lineIter = linesOnBoard.entrySet().iterator();
 
 		equilibrium = true;
 		
-		while (it.hasNext()) {
-	        Stack<TetrisBlock> line = it.next().getValue();
+		while (lineIter.hasNext()) 
+		{
+	        Stack<TetrisBlock> line = lineIter.next().getValue();
 	        if(line.size() == width)
 	        {
 	    		equilibrium = false;
 	    		removeLine(line);
 	        }
-	        it.remove(); // avoids a ConcurrentModificationException
+	        lineIter.remove(); 
 	    }		
 	}
 	
+	/**
+	 * removes the current line of TetrisBlocks from the TetrisBoard
+	 * @param line
+	 */
 	private void removeLine(Stack<TetrisBlock> line)
 	{
 		while(!line.empty())
@@ -222,6 +281,11 @@ public class PlayingBoard
 		}
 	}
 	
+	/**
+	 * 
+	 * @param iter
+	 * @return
+	 */
 	private HashMap<Integer, Stack<TetrisBlock>> getBlocksPerLine(Iterator<Polyominoes.TetrisBlock> iter)
 	{
 		HashMap<Integer, Stack<Polyominoes.TetrisBlock>> linesOnBoard = new HashMap<Integer, Stack<Polyominoes.TetrisBlock>>();
@@ -241,6 +305,10 @@ public class PlayingBoard
 		return linesOnBoard;
 	}
 	
+	/**
+	 * Searches the entire TetrisBoard for TetrisBlocks and adds them to an arraylist
+	 * @return arraylist of TetrisBlocks currently on the TetrisBoard
+	 */
 	public ArrayList<Polyominoes.TetrisBlock> getAllBlocksOnBoard()
 	{
 		ArrayList<Polyominoes.TetrisBlock> list = new ArrayList<Polyominoes.TetrisBlock>();
@@ -252,7 +320,6 @@ public class PlayingBoard
 				if(block != null)
 				{
 					//Updates if the block is able to move down or not
-					block.update();
 					list.add(block);
 				}
 			}
@@ -260,6 +327,9 @@ public class PlayingBoard
 		return list;
 	}
 
+	/**
+	 * @return A string representation of what is currently on the TetrisBoard
+	 */
 	public String currentBoard() 
 	{
 		StringBuilder SB = new StringBuilder();
@@ -275,9 +345,13 @@ public class PlayingBoard
 		return SB.toString();
 	}
 
+	/**
+	 * Restarts the PlayingBoard for a fresh new start
+	 */
 	public void restart() 
 	{
 		tetrisBoard = new Polyominoes.TetrisBlock[width][height];
 		current = null;
+		moveQueue.clear();
 	}
 }

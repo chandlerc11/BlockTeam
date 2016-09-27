@@ -37,16 +37,16 @@ public class GameServer {
 	
 	public synchronized void addGamerToList(GamerSocket gs)
 	{
-		gamerList.add(gs);
-		if(gamerList.size() == 0)
-		{
-			mainGame.restart();
-		}
+		gamerList.add(gs);		
 	}
 	
 	public synchronized void removeGamer(GamerSocket gs)
 	{
 		gamerList.remove(gs);
+		if(gamerList.size() == 0)
+		{
+			mainGame.restart();
+		}
 	}
 	
 	public synchronized void sendDataToGamers(String data)

@@ -31,11 +31,11 @@ public class GamerSocket
     public void onConnect(Session session) {
     	this.session = session;
         System.out.println("Connect: " + session.getRemoteAddress().getAddress());
-        try {
+        /*try {
             session.getRemote().sendString("Hello Webbrowser");
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         
         gameServer = GameServer.getGamerServer();
         gameServer.addGamerToList(this);

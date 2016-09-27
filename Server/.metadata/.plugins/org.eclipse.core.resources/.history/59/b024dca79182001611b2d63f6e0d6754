@@ -1,0 +1,126 @@
+package Game;
+
+import Game.GameConstants.*;
+import Server.GameServer;
+
+/**
+ * TetrisGame creates the playingBoard for 
+ *
+ */
+public class TetrisGame  
+{
+	private GameServer gameServer;
+	private boolean gameRunning;
+	private PlayingBoard PB;
+	private Thread gameUpdater;
+	
+	public TetrisGame(GameServer gameServer)
+	{
+		this.gameServer = gameServer;
+		PB = new PlayingBoard(GameConstants.WIDTH, GameConstants.HEIGHT, this);
+		gameRunning = false;
+		start();
+	}
+	
+	public void start()
+	{
+		gameUpdater = new Thread(new RunningGame(this));
+		gameUpdater.start();
+	}	
+	
+	public void sendDataToGamers()
+	{
+		gameServer.sendDataToGamers(PB.currentBoard());
+	}
+
+	public synchronized void gamersMove(GameMoves move) 
+	{
+		if(gameRunning)
+		{
+			if(GameMoves.PAUSE == move)
+			{
+				pauseGame();
+			}
+			else
+			{
+				PB.addMoveToQueue(move);			
+			}	
+		}
+		else if(move == GameMoves.START)
+		{
+			startGame();
+		}
+	}
+	
+	public void startGame()
+	{
+		gameRunning = true;
+	}
+	
+	public void pauseGame()
+	{
+		gameRunning = false;
+	}
+
+	public void restart() 
+	{
+		PB.restart();
+		pauseGame();
+	}
+	
+	public boolean isGameRunning()
+	{
+		return gameRunning;
+	}
+
+	public void gameOver() 
+	{
+		restart();
+		gameServer.sendDataToGamers("Game Over");
+	}
+	
+	private class RunningGame implements Runnable
+	{
+		private TetrisGame tetrisGame;
+		private volatile boolean running;
+		public RunningGame(TetrisGame tetrisGame)
+		{
+			this.tetrisGame = tetrisGame; 
+		}		
+		
+		@Override
+		public void run() 
+		{
+			running = true;
+			while(running)
+			{
+				while(tetrisGame.isGameRunning())
+				{
+					System.out.println("Updating Game");
+					long startTime = System.currentTimeMillis(); //fetch starting time
+					tetrisGame.gamersMove(GameMoves.UPDATE);
+					while((System.currentTimeMillis() - startTime) < GameConstants.RATE)
+					{
+						sleep();
+					}
+				}			
+				sleep();
+			}		
+		}
+		
+		public void sleep()
+		{
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				stop();
+			}
+		}
+		
+		public void stop()
+		{
+			running = false;
+		}
+	}	
+}

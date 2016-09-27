@@ -19,9 +19,7 @@ public class GameConstants {
 	public static int[][] OTYPE_START = {{5, 19}, {4, 19}, {5, 18}, {4, 18}};
 	public static int[][] STYPE_START = {{4, 19}, {4, 18}, {5, 18}, {5, 17}};
 	public static int[][] TTYPE_START = {{4, 18}, {5, 19}, {5, 18}, {6, 18}};
-	public static int[][] ZTYPE_START = {{5, 19}, {5, 18}, {4, 18}, {4, 17}};
-	
-	
+	public static int[][] ZTYPE_START = {{5, 19}, {5, 18}, {4, 18}, {4, 17}};	
 	
 	public static final int WIDTH = 10;
 	public static final int HEIGHT = 20;

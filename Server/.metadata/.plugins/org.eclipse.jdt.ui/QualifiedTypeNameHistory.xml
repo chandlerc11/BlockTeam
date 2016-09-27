@@ -21,10 +21,10 @@
 <fullyQualifiedTypeName name="Server.GameServer"/>
 <fullyQualifiedTypeName name="Game.Polyominoes.Block"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="Game.Polyominoes"/>
 <fullyQualifiedTypeName name="Game.GameConstants.PolyominoeType"/>
 <fullyQualifiedTypeName name="GamePieces.IType"/>
 <fullyQualifiedTypeName name="java.util.Iterator"/>
 <fullyQualifiedTypeName name="Game.GameConstants.TetrisBlockColor"/>
 <fullyQualifiedTypeName name="Game.GameConstants.GameMoves"/>
+<fullyQualifiedTypeName name="Game.Polyominoes"/>
 </qualifiedTypeNameHistroy>

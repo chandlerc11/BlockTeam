@@ -9,12 +9,12 @@ public class OType extends Polyominoes {
 	public OType(TetrisBlock[][] tetrisBoard) {
 		// TODO Auto-generated constructor stub
 		super(PolyominoeType.OTYPE, tetrisBoard);
+		createNewPieceFromArray(GameConstants.OTYPE_START, TetrisBlockColor.YELLOW);
 	}
 
 	@Override
-	protected boolean createPiece() {
-		createNewPieceFromArray(GameConstants.OTYPE_START, TetrisBlockColor.YELLOW, this);
-		return checkIfGameOver();
+	protected boolean rotate()
+	{
+		return false;		
 	}
-
 }

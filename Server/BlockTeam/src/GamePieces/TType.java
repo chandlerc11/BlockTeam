@@ -9,12 +9,6 @@ public class TType extends Polyominoes {
 	public TType(TetrisBlock[][] tetrisBoard) {
 		// TODO Auto-generated constructor stub
 		super(PolyominoeType.TTYPE, tetrisBoard);
+		createNewPieceFromArray(GameConstants.TTYPE_START, TetrisBlockColor.PURPLE);
 	}
-
-	@Override
-	protected boolean createPiece() {
-		createNewPieceFromArray(GameConstants.TTYPE_START, TetrisBlockColor.PURPLE, this);
-		return checkIfGameOver();
-	}
-
 }

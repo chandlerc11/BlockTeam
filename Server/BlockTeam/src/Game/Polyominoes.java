@@ -2,7 +2,6 @@ package Game;
 
 import java.util.*;
 import Game.GameConstants.*;
-import Game.Polyominoes.TetrisBlock;
 import GamePieces.*;
 
 public abstract class Polyominoes 
@@ -13,12 +12,19 @@ public abstract class Polyominoes
 	protected boolean isFirstDraw;
 	protected HashMap<GameMoves, Boolean> canAction;
 	
+	/**
+	 * Creates a Polyominoe to add to the TetrisBoard, the specific piece will be random
+	 * @param board TetrisBoard 
+	 * @return
+	 */
 	public static Polyominoes createNewPiece(TetrisBlock[][]board)
 	{
 		Random rand = new Random();
-		Polyominoes check;
+		Polyominoes check = null;
 		
-		switch(GameConstants.PolyominoeType.values()[rand.nextInt(GameConstants.NUMPIECES)])
+		PolyominoeType type = PolyominoeType.values()[rand.nextInt(GameConstants.NUMPIECES)];
+		
+		switch(type)
 		{
 			case ITYPE: check = new IType(board);  
 				break;
@@ -34,11 +40,14 @@ public abstract class Polyominoes
 				break;
 			case ZTYPE: check = new ZType(board);
 				break;
-			default: return null;
+			default: return check;
 		}
 		
-		if(check.createPiece())
+		//Checks to see if the polyominoe would be placed on top of an existing piece on the board
+		boolean isGameNotOver = !check.isGameOver();
+		if(isGameNotOver)
 		{
+			//If not 
 			check.drawPoly();
 			return check;
 		}
@@ -46,6 +55,11 @@ public abstract class Polyominoes
 		return null;
 	}
 	
+	/**
+	 * Super Constructor for Polyominoe
+	 * @param type
+	 * @param board
+	 */
 	public Polyominoes(PolyominoeType type, TetrisBlock[][] board)
 	{
 		this.board = board;
@@ -55,14 +69,13 @@ public abstract class Polyominoes
 		canAction.put(GameMoves.LEFT, false);
 		canAction.put(GameMoves.RIGHT, false);
 		canAction.put(GameMoves.DOWN, false);
-	}
-
-	protected  Integer[] rotateBlock(TetrisBlock toRotate, int rotateWidth, int rotateHeight) 
-	{
-		// TODO Auto-generated method stub
-		return null;	
-	}
+	}	
 	
+	/**
+	 * Takes in an action request and performs the action
+	 * @param move The specific action to perform
+	 * @return True if the action can be performed, false otherwise
+	 */
 	public boolean action(GameMoves move) 
 	{
 		switch(move)
@@ -72,15 +85,13 @@ public abstract class Polyominoes
 			case DOWN: 		return down();
 			case ALLDOWN: 	return allDown();
 			case ROTATE:	return rotate();
+			default: 		return false;
 		}
-		return false;
 	}
 	
-	protected boolean createPiece()
-	{
-		return true;
-	}
-	
+	/**
+	 * Erases the last instance of the Polyominoe from the TetrisBoard and draws new instance
+	 */
 	protected void drawPoly()
 	{
 		Iterator<TetrisBlock> iterDelete = blocks.iterator();
@@ -94,6 +105,7 @@ public abstract class Polyominoes
 			else
 			{
 				isFirstDraw = false;
+				break;
 			}
 		}
 		
@@ -105,10 +117,13 @@ public abstract class Polyominoes
 		}
 	}
 
-	
+	/**
+	 * Action: Rotates a piece around its 3rd piece
+	 * @return
+	 */
 	protected boolean rotate() 
 	{
-		TetrisBlock rotationBlock = blocks.get(3);
+		TetrisBlock rotationBlock = blocks.get(2);
 		int rotateWidth = rotationBlock.getWidth();
 		int rotateHeight = rotationBlock.getHeight();
 		ArrayList<Integer[]> rotatePositions = new ArrayList<Integer[]>();
@@ -135,103 +150,186 @@ public abstract class Polyominoes
 		
 		return false;
 	}
-
-	protected boolean allDown()
-	{
-		while(down());
-		return true;
-	}
-
-	protected boolean down()
-	{
-		update();
-		if(canAction.get(GameMoves.DOWN))
-		{
-			Iterator<TetrisBlock> iter = blocks.iterator();
-			while(iter.hasNext())
-			{
-				TetrisBlock block = iter.next();
-				block.reDraw(block.getWidth(), block.getHeight() - 1);
-			}
-			drawPoly();
-			return true;
-		}
-		return false;
-	}
 	
-	protected boolean checkPositions(ArrayList<Integer[]> rotatePositions) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	protected boolean right()
+	/**
+	 * New position for a block that is rotating
+	 * @param toRotate
+	 * @param rotateWidth
+	 * @param rotateHeight
+	 * @return
+	 */
+	protected  Integer[] rotateBlock(TetrisBlock toRotate, int rotateWidth, int rotateHeight) 
 	{
-		update();
-		if(canAction.get(GameMoves.RIGHT))
-		{
-			Iterator<TetrisBlock> iter = blocks.iterator();
-			while(iter.hasNext())
-			{
-				TetrisBlock block = iter.next();
-				block.reDraw(block.getWidth() + 1, block.getHeight());
-			}
-			drawPoly();
-			return true;
-		}
-		return false;
-	}
-
-	protected boolean left()
-	{
-		update();
-		if(canAction.get(GameMoves.LEFT))
-		{
-			Iterator<TetrisBlock> iter = blocks.iterator();
-			while(iter.hasNext())
-			{
-				TetrisBlock block = iter.next();
-				block.reDraw(block.getWidth() - 1, block.getHeight());
-			}
-			drawPoly();
-			return true;
-		}
-		return false;
-	}
-	
-	public void deleteBlock(TetrisBlock block)
-	{
-		board[block.getWidth()][block.getHeight()] = null;
-		blocks.remove(block);
-	}
-	
-	protected void createNewPieceFromArray(int[][] startArray, TetrisBlockColor color, Polyominoes poly)
-	{
-		blocks = new ArrayList<TetrisBlock>();
+		int toRotateWidth = toRotate.getWidth();
+		int toRotateHeight = toRotate.getHeight();
+		int offSetWidth = toRotateWidth - rotateWidth;
+		int offSetHeight = toRotateHeight - rotateHeight;
 		
-		for(int index = 0; index < startArray.length; index++)
+		if(offSetHeight == 0 && offSetWidth != 0)
 		{
-			blocks.add(new TetrisBlock(startArray[index][0], startArray[index][1], color, poly));
+			toRotateHeight += offSetWidth;
+			toRotateWidth = rotateWidth;
 		}
-	}
-
-
-	protected boolean checkIfGameOver() 
-	{
-		for(int index = 0; index < blocks.size(); index++)
+		else if(offSetWidth == 0 && offSetHeight != 0)
 		{
-			if(!checkIfBlockNotTaken(blocks.get(index)))
+			toRotateWidth -= offSetHeight;
+			toRotateHeight = rotateHeight;
+		}
+		return new Integer[]{toRotateWidth, toRotateHeight};	
+	}
+	
+	/**
+	 * Will check if the new Positions will be able to rotate and not overlap another piece
+	 * @param rotatePositions
+	 * @return
+	 */
+	protected boolean checkPositions(ArrayList<Integer[]> rotatePositions) {
+		for(int index = 0; index < rotatePositions.size(); index++)
+		{
+			Integer[] toCheck = rotatePositions.get(index);
+			boolean canRotate = checkIfBlockNotTaken(blocks.get(index), toCheck[0], toCheck[1]);
+			if(!canRotate)
 			{
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	public boolean checkIfBlockNotTaken(TetrisBlock block)
+
+	/**
+	 * Action: Moves the piece down until the piece can no longer go down
+	 * @return Returns true if the piece move down at least once
+	 */
+	protected boolean allDown()
 	{
-		return board[block.getWidth()][block.getHeight()] == null;
+		int count = 0;
+		while(down())
+		{
+			++count;
+		}
+		if(count > 0)
+		{
+			return true;			
+		}
+		return false;
+	}	
+	
+	/**
+	 * Action: Moves piece down one space
+	 * @return True if it can move down, else false;
+	 */
+	protected boolean down()
+	{
+		return performAction(GameMoves.DOWN, 0, -1);
 	}
 
+	/**
+	 * Action: Moves piece to the right one space
+	 * @return True if it can move right, else false;
+	 */
+	protected boolean right()
+	{
+		return performAction(GameMoves.RIGHT, 1, 0);
+	}
+
+	/**
+	 * Action: Moves piece to the left one space
+	 * @return True if it can move left, else false;
+	 */
+	protected boolean left()
+	{
+		return performAction(GameMoves.LEFT, -1, 0);
+	}
+	
+	/**
+	 * Will either perform left, right, or down action depending on the argument being sent in
+	 * @param move The kind of move that should be checked if possible
+	 * @param width number to add or subtract to the width
+	 * @param height number to add or subtract to the height
+	 * @return True if placing TetrisBlock in location does not overlap another polyominoe, false otherwise
+	 */
+	private boolean performAction(GameMoves move, int width, int height)
+	{
+		update();
+		if(canAction.get(move))
+		{
+			Iterator<TetrisBlock> iter = blocks.iterator();
+			while(iter.hasNext())
+			{
+				TetrisBlock block = iter.next();
+				block.reDraw(block.getWidth() + width, block.getHeight() + height);
+			}
+			drawPoly();
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Removes the TetrisBlock from the TetrisBoard and the arraylist in polyominoe
+	 * @param block The TetrisBlock to remove
+	 */
+	public void deleteBlock(TetrisBlock block)
+	{
+		board[block.getWidth()][block.getHeight()] = null;
+		blocks.remove(block);
+	}
+	
+	/**
+	 * Takes in 2D integer array and creates TetrisBlocks that are associated with this Polyominoe
+	 * @param startArray Exact location where the polyominoe will start
+	 * @param color The color of the TetrisBlocks
+	 */
+	protected void createNewPieceFromArray(int[][] startArray, TetrisBlockColor color)
+	{
+		blocks = new ArrayList<TetrisBlock>();
+		
+		for(int index = 0; index < startArray.length; index++)
+		{
+			blocks.add(new TetrisBlock(startArray[index][0], startArray[index][1], color, this));
+		}
+	}
+
+	/**
+	 * Checks to see if the current piece would overlap another when first being created
+	 * @return True if it will overlap another piece when first created, false otherwise
+	 */
+	protected boolean isGameOver() 
+	{
+		for(int index = 0; index < blocks.size(); index++)
+		{
+			if(!checkIfBlockNotTaken(blocks.get(index)))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Looks if an individual block will 
+	 * @param block
+	 * @return
+	 */
+	public boolean checkIfBlockNotTaken(TetrisBlock block)
+	{
+		return checkIfBlockNotTaken(block, block.getWidth(), block.getHeight());
+	}
+	
+	public boolean checkIfBlockNotTaken(TetrisBlock block, int width, int height)
+	{
+		if(width < 0 || height < 0 || width >= board.length || height >= board[0].length)
+		{
+			return false;
+		}
+		TetrisBlock toCheck = board[width][height];
+		return toCheck == null || toCheck.getParentPolyominoe().equals(block.getParentPolyominoe()); 
+		
+	}
+
+	/**
+	 * Checks to see if the polyominoe can go either right, left or down
+	 */
 	public void update() 
 	{
 		canAction.clear();
@@ -240,6 +338,12 @@ public abstract class Polyominoes
 		canAction.put(GameMoves.RIGHT, canGoRight());
 	}
 	
+	/**
+	 *  Checks to see if the Polyominoe can go in a certain direction based on the indexW and indexH
+	 * @param indexW
+	 * @param indexH
+	 * @return
+	 */
 	private boolean canAction(int indexW, int indexH)
 	{
 		int width = 0;
@@ -247,16 +351,12 @@ public abstract class Polyominoes
 		for(int index = 0; index < blocks.size(); index++)
 		{
 			TetrisBlock currentBlock = blocks.get(index);
-			width = currentBlock.getOldWidth() + indexW;
+			width = currentBlock.getWidth() + indexW;
 			height = currentBlock.getHeight() + indexH;
-			
-			if(width < 0 || width > GameConstants.WIDTH - 1 || height < 0)
-			{
-				return false;
-			}
-			TetrisBlock block = board[width][height];
+						
+			boolean canMove = checkIfBlockNotTaken(currentBlock, width, height);
 				
-			if(block != null && !block.getParentPolyominoe().equals(currentBlock.getParentPolyominoe()))
+			if(!canMove)
 			{
 				return false;
 			}
@@ -264,56 +364,87 @@ public abstract class Polyominoes
 		return true;
 	}
 	
+	/**
+	 * Check if the Polyominoe can go right
+	 * @return True if can go right, false otherwise
+	 */
 	private Boolean canGoRight() 
 	{
 		return canAction(1, 0);
 	}
 
+	/**
+	 * Check if the Polyominoe can go left
+	 * @return True if can go left, false otherwise
+	 */
 	private Boolean canGoLeft() {
 		return canAction(-1, 0);
 	}
 
+	/**
+	 * Check if the Polyominoe can go down
+	 * @return True if can go down, false otherwise
+	 */
 	public boolean canGoDown()
 	{
 		return canAction(0, -1);		
 	}
 	
+	/**
+	 * 
+	 *
+	 */
 	public static class TetrisBlock
 	{
-		private int indexWidth, indexHeight, oldIndexWidth, oldIndexHeight;
+		private int indexWidth;
+		private int indexHeight;
+		private int oldIndexWidth;
+		private int oldIndexHeight;
 		private TetrisBlockColor color;
 		private Polyominoes parent;
+		
+		/**
+		 * Constructor for TetrisBlock
+		 * @param indexWidth
+		 * @param indexHeight
+		 * @param color
+		 * @param parent
+		 */
 		public TetrisBlock(int indexWidth, int indexHeight, TetrisBlockColor color, Polyominoes parent)
 		{
 			this.indexWidth = indexWidth;
 			this.indexHeight = indexHeight;
 			this.color = color;
 			this.parent = parent;
-			oldIndexHeight = 23;
-			oldIndexWidth = 5;
 		}
 		
+		/**
+		 * @return A string representation of the TetrisBlock, with width, height and color
+		 */
 		public String data() 
 		{
 			StringBuilder SB = new StringBuilder();
-			SB.append("{");
 			SB.append(indexWidth);
 			SB.append(",");
 			SB.append(indexHeight);
-			SB.append("}:");
+			SB.append(":");
 			SB.append(color.toString());
 			return SB.toString();
 		}
 		
+		/**
+		 * Takes a new position and sets the correct indexWidth and indexHeight while saving the previous position
+		 * @param newIndexWidth
+		 * @param newIndexHeight
+		 */
 		public void reDraw(int newIndexWidth, int newIndexHeight)
 		{
 			oldIndexWidth = indexWidth;
 			oldIndexHeight = indexHeight;
-			indexWidth = Math.max(newIndexWidth, 0);
-			indexWidth = Math.min(GameConstants.WIDTH - 1, indexWidth);
-			indexHeight = Math.max(newIndexHeight, 0);
-			indexHeight = Math.min(GameConstants.HEIGHT - 1, indexHeight);
+			indexWidth = newIndexWidth;
+			indexHeight = newIndexHeight;
 		}
+		
 		
 		public int getOldHeight()
 		{
@@ -335,14 +466,12 @@ public abstract class Polyominoes
 			return indexWidth;
 		}
 
+		/**
+		 * Deletes the block from the TetrisBoard and the polyominoe
+		 */
 		public void delete() 
 		{
 			parent.deleteBlock(this);			
-		}
-
-		public void update() 
-		{
-			parent.update();			
 		}
 
 		public Polyominoes getParentPolyominoe() 

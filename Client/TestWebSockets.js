@@ -9,7 +9,12 @@ window.onkeydown = function(event){
 
 ws.onopen = function() {
     alert("Opened!");
-    ws.send("Hello Server");
+    ws.send('st');
+    ws.send('rt');
+    ws.send('rt');
+    ws.send('rt');
+    ws.send('rt');
+    ws.send('rt');
 };
 
 ws.onmessage = function (evt) {

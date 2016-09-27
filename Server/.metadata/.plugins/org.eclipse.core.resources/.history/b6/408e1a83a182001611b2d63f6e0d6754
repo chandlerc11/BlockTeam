@@ -1,0 +1,21 @@
+package GamePieces;
+
+import Game.*;
+import Game.GameConstants.PolyominoeType;
+import Game.GameConstants.TetrisBlockColor;
+
+public class ZType extends Polyominoes {
+
+	public ZType(TetrisBlock[][] tetrisBoard) {
+		// TODO Auto-generated constructor stub
+		super(PolyominoeType.ZTYPE, tetrisBoard);
+		createNewPieceFromArray(GameConstants.ZTYPE_START, TetrisBlockColor.RED, this);
+		
+	}
+
+	@Override
+	protected boolean rotate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+}

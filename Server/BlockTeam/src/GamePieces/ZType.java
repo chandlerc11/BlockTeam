@@ -1,27 +1,57 @@
 package GamePieces;
 
+import java.util.ArrayList;
+
 import Game.*;
 import Game.GameConstants.PolyominoeType;
 import Game.GameConstants.TetrisBlockColor;
+import Game.Polyominoes.TetrisBlock;
 
 public class ZType extends Polyominoes {
 
 	public ZType(TetrisBlock[][] tetrisBoard) {
 		// TODO Auto-generated constructor stub
 		super(PolyominoeType.ZTYPE, tetrisBoard);
+		createNewPieceFromArray(GameConstants.ZTYPE_START, TetrisBlockColor.RED);
 		
 	}
 
+	/**
+	 * Rotates the ZType Polyominoe
+	 */
 	@Override
 	protected boolean rotate() {
-		// TODO Auto-generated method stub
+		ArrayList<Integer[]> rotatePositions = new ArrayList<Integer[]>();
+		TetrisBlock block0 = blocks.get(0);
+		TetrisBlock block1 = blocks.get(1);
+		TetrisBlock block2 = blocks.get(2);
+		TetrisBlock block3 = blocks.get(3);
+		
+		if(blocks.get(1).getHeight() < blocks.get(0).getHeight())
+		{
+			rotatePositions.add(new Integer[]{block0.getWidth(), block0.getHeight()});
+			rotatePositions.add(new Integer[]{block1.getWidth() - 1, block1.getHeight() + 1});
+			rotatePositions.add(new Integer[]{block2.getWidth(), block2.getHeight() + 2});
+			rotatePositions.add(new Integer[]{block3.getWidth() - 1, block3.getHeight() + 3});
+		}
+		else
+		{
+			rotatePositions.add(new Integer[]{block0.getWidth(), block0.getHeight()});
+			rotatePositions.add(new Integer[]{block1.getWidth() + 1, block1.getHeight() - 1});
+			rotatePositions.add(new Integer[]{block2.getWidth(), block2.getHeight() - 2});
+			rotatePositions.add(new Integer[]{block3.getWidth() + 1, block3.getHeight() - 3});
+		}
+		
+		if(checkPositions(rotatePositions))
+		{
+			for(int index = 0; index < blocks.size(); index++)
+			{
+				Integer[] positions = rotatePositions.get(index);
+				blocks.get(index).reDraw(positions[0], positions[1]);
+			}
+			drawPoly();
+			return true;
+		}
 		return false;
 	}
-
-	@Override
-	protected boolean createPiece() {
-		createNewPieceFromArray(GameConstants.ZTYPE_START, TetrisBlockColor.RED, this);
-		return checkIfGameOver();
-	}
-
 }
